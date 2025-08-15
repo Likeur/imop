@@ -1,0 +1,30 @@
+{
+  "name": "imop",
+  "version": "1.0.0",
+  "main": "cli.js",
+  "bin": {
+    "imop": "./cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "image",
+    "optimization",
+    "compression",
+    "png",
+    "webp",
+    "jpeg"
+  ],
+  "author": "likeur",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/likeur/imop.git"
+  },
+  "description": "An opensource cli image optimizer",
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.2",
+    "sharp": "^0.34.3"
+  }
+}
