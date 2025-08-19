@@ -7,7 +7,7 @@ const path = require('path');
 
 async function main() {
 
-  console.log( 
+  console.log(
     `
     ***  ***      ***       ***      *******
     ***  ****    ****    *********   *********
@@ -16,8 +16,8 @@ async function main() {
     ***  ***  **  ***    ***   ***   *******
     ***  ***      ***    *********   ***
     ***  ***      ***       ***      ***  (by @likeur)
-    ` 
-);
+    `
+  );
   console.log('✨ Bienvenue dans imop(image optimizer): l\'outil d\'optimisation d\'images !');
 
   try {
@@ -25,6 +25,11 @@ async function main() {
       message: 'Quel est le chemin du dossier contenant les images à optimiser ?',
       default: './images'
     });
+
+    if (!fs.existsSync(sourceDir)) {
+      console.error(`❌ Erreur : Le dossier source "${sourceDir}" n'existe pas.`);
+      process.exit(1);
+    }
 
     const outputDir = await input({
       message: 'Quel est le nom du dossier pour les images optimisées ?',
@@ -39,11 +44,6 @@ async function main() {
         { value: 'webp', name: 'WebP (format moderne et très compressé)' },
       ],
     });
-
-    if (!fs.existsSync(sourceDir)) {
-      console.error(`❌ Erreur : Le dossier source "${sourceDir}" n'existe pas.`);
-      process.exit(1);
-    }
 
     if (!fs.existsSync(outputDir)) {
       fs.mkdirSync(outputDir);
