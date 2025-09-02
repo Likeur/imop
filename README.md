@@ -1,60 +1,102 @@
-# imop (Image Optimizer) CLI
+# 🖼️ imop - Image Optimizer
 
-Un outil en ligne de commande (CLI) simple et puissant pour optimiser vos images en vrac. Il vous permet de compresser et de convertir facilement plusieurs images à la fois, ce qui est idéal pour améliorer les performances de vos sites web ou de vos applications.
+**imop** is a versatile command-line tool for optimizing and converting images. Built with Node.js, it offers both an interactive prompt and command-line arguments to make image optimization fast and efficient.
 
-## Fonctionnalités
+### ✨ Features
 
-- Optimisation par lot : Optimisez toutes les images d'un dossier en une seule commande.
+  * **Batch Image Optimization:** Process multiple images in a single run.
+  * **Format Conversion:** Easily convert images to **JPEG**, **PNG**, or **WebP**.
+  * **Interactive Mode:** A guided, step-by-step process for optimizing your images.
+  * **Command-Line Arguments:** Quickly run optimizations directly from your terminal.
+  * **Quality Control:** Optimizes images with a default quality setting of 80 to balance file size and visual fidelity.
 
-- Choix du format : Convertissez les images en formats modernes et optimisés comme JPEG, PNG ou WebP.
+-----
 
-- Interface interactive : Un shell interactif vous guide à travers les options d'optimisation.
+### 🚀 Getting Started
 
-- Dossier de sortie dédié : Les images optimisées sont sauvegardées dans un dossier séparé, sans écraser les fichiers originaux.
+#### Prerequisites
 
-## Installation
+Make sure you have Node.js installed on your system.
 
-Pour utiliser l'outil, vous devez l'installer globalement via npm. Assurez-vous d'avoir Node.js installé sur votre machine.
-
----
+#### Installation
 
 ```bash
 npm install -g imop
 ```
+or if you prefer using npx:
+```bash
+npx imop
+```
+note that all the arguments still available when you use npx because it gonna download it temporary on your computer.
 
-## Utilisation
+#### Usage
 
-Pour optimiser vos images éffectuez juste la commande suivante dans votre terminal du projet :
+**imop** can be used in many: via interactive prompts or with command-line arguments.
+
+-----
+
+### 🖥️ Interactive Mode
+
+Simply run the script without any arguments to start the interactive mode. The tool will ask you for the input directory, output directory, and the desired output format.
 
 ```bash
 imop
 ```
 
-Le script vous posera alors trois questions :
+You'll be guided through these prompts:
 
-1. Le chemin du dossier source : Le dossier qui contient les images à optimiser.
+  * `What is the path of the folder containing the images to optimize?`
+  * `What is the name of the folder for the optimized images?`
+  * `What output image format do you want?`
 
-2. Le dossier de destination : Le nom du dossier où les images optimisées seront sauvegardées.
+-----
 
-3. Le format de sortie : Le format de l'image optimisée (JPEG, PNG ou WebP).
+### ⚙️ Command-Line Mode
 
----
+For a faster workflow, you can specify all your options directly in the command. This is especially useful for scripting or repetitive tasks.
 
-## Exemple d'utilisation
-
-Supposons que vous ayez un dossier nommé assets avec plusieurs images à optimiser. Vous pouvez lancer l'outil et fournir les informations suivantes :
+#### Syntax
 
 ```bash
-$ optimize-images
-✨ Bienvenue dans l'outil d'optimisation d'images !
-? Quel est le chemin du dossier contenant les images à optimiser ? (./images) assets
-? Quel est le nom du dossier pour les images optimisées ? (./optimized-images) output
-? Quel format d'image de sortie souhaitez-vous ? (Use arrow keys)
-❯ JPEG (parfait pour les photos)
-  PNG (idéal pour les graphiques avec transparence)
-  WebP (format moderne et très compressé)
+imop [options]
 ```
 
-Après avoir fait vos choix, l'outil traitera les images et les sauvegardera dans le dossier output.
+#### Options
+
+| Option | Alias | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `--jpeg` | `-j` | Optimize images to **JPEG** format. | `imop.js --jpeg` |
+| `--png` | `-p` | Optimize images to **PNG** format. | `imop.js --png` |
+| `--webp` | `-w` | Optimize images to **WebP** format. | `imop.js --webp` |
+| `--input` | `-i` | Specify the **input directory** containing the source images. | `imop.js --input ./my-photos` |
+| `--output` | `-o` | Specify the **output directory** for the optimized images. | `imop.js --output ./compressed-images` |
+
+#### Examples
+
+**Optimize all images to WebP format:**
+
+```bash
+imop --webp
+```
+
+**Convert images from one folder to another in JPEG format:**
+
+```bash
+imop --jpeg --input ./source-images --output ./optimized-jpegs
+```
+
+**Use a combination of options with short aliases:**
+
+```bash
+imop -w -i ./photos -o ./output-folder
+```
+
+-----
+
+### 📝 Notes
+
+  * **Supported Formats:** The tool automatically detects and processes `.jpg`, `.jpeg`, `.png`, `.gif`, and `.webp` files from the source directory.
+  * **Output Directory:** If the specified output directory does not exist, **imop** will create it for you.
+  * **Default Quality:** All images are optimized with a quality setting of 80 to ensure a good balance between compression and visual quality.
 
 coded with love by @likeur

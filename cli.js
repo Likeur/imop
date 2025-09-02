@@ -4,6 +4,7 @@ const { input, select } = require('@inquirer/prompts');
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const yargs = require('yargs');
 
 async function main() {
 
@@ -18,30 +19,78 @@ async function main() {
     ***  ***      ***       ***      ***  (by @likeur)
     ` 
 );
-  console.log('✨ Bienvenue dans imop(image optimizer): l\'outil d\'optimisation d\'images !');
+  console.log('✨ Welcome to imop (image optimizer): the image optimization tool!');
 
-  try {
-    const sourceDir = await input({
-      message: 'Quel est le chemin du dossier contenant les images à optimiser ?',
-      default: './images'
-    });
+  
+   const argv = yargs(process.argv.slice(2))
+    .option('jpeg', {
+      alias: 'j',
+      type: 'boolean',
+      description: 'Optimize images to JPEG format'
+    })
+    .option('png', {
+      alias: 'p',
+      type: 'boolean',
+      description: 'Optimize images to PNG format'
+    })
+    .option('webp', {
+      alias: 'w',
+      type: 'boolean',
+      description: 'Optimize images to WebP format'
+    })
+    .option('input', {
+      alias: 'i',
+      type: 'string',
+      description: 'Input directory path containing images to optimize'
+    })
+    .option('output', {
+      alias: 'o',
+      type: 'string',
+      description: 'Output directory path for optimized images'
+    })
+    .help()
+    .argv;
+  
+   try {
+    let sourceDir, outputDir, format;
 
-    const outputDir = await input({
-      message: 'Quel est le nom du dossier pour les images optimisées ?',
-      default: './optimized-images'
-    });
+    if (argv.input) {
+      sourceDir = argv.input;
+    } else {
+      sourceDir = await input({
+        message: 'What is the path of the folder containing the images to optimize?',
+        default: './images'
+      });
+    }
 
-    const format = await select({
-      message: 'Quel format d\'image de sortie souhaitez-vous ?',
-      choices: [
-        { value: 'jpeg', name: 'JPEG (parfait pour les photos)' },
-        { value: 'png', name: 'PNG (idéal pour les graphiques avec transparence)' },
-        { value: 'webp', name: 'WebP (format moderne et très compressé)' },
-      ],
-    });
+    if (argv.output) {
+      outputDir = argv.output;
+    } else {
+      outputDir = await input({
+        message: 'What is the name of the folder for the optimized images?',
+        default: './optimized-images'
+      });
+    }
+
+    if (argv.jpeg) {
+      format = 'jpeg';
+    } else if (argv.png) {
+      format = 'png';
+    } else if (argv.webp) {
+      format = 'webp';
+    } else {
+      format = await select({
+        message: 'What output image format do you want?',
+        choices: [
+          { value: 'jpeg', name: 'JPEG (perfect for photos)' },
+          { value: 'png', name: 'PNG (ideal for graphics with transparency)' },
+          { value: 'webp', name: 'WebP (modern and highly compressed format)' },
+        ],
+      });
+    }
 
     if (!fs.existsSync(sourceDir)) {
-      console.error(`❌ Erreur : Le dossier source "${sourceDir}" n'existe pas.`);
+      console.error(`❌ Error: The source folder "${sourceDir}" does not exist.`);
       process.exit(1);
     }
 
@@ -56,11 +105,11 @@ async function main() {
     });
 
     if (imageFiles.length === 0) {
-      console.log('🖼️  Aucune image valide trouvée dans le dossier source. Opération annulée.');
+      console.log('🖼️  No valid images found in the source folder. Operation canceled.');
       return;
     }
 
-    console.log(`\n⏳ Optimisation de ${imageFiles.length} images...`);
+    console.log(`\n⏳ Optimizing ${imageFiles.length} images...`);
 
     for (const file of imageFiles) {
       const inputPath = path.join(sourceDir, file);
@@ -71,13 +120,13 @@ async function main() {
         .toFormat(format, { quality: 80 })
         .toFile(outputPath);
 
-      console.log(`✅ ${file} optimisée et sauvegardée en tant que ${outputFilename}`);
+      console.log(`✅ ${file} optimized and saved as ${outputFilename}`);
     }
 
-    console.log('\n🎉 Opération terminée ! Toutes les images ont été optimisées.');
+    console.log('\n🎉 Operation complete! All images have been optimized.');
 
   } catch (error) {
-    console.error('❌ Une erreur est survenue :', error);
+    console.error('❌ An error occurred:', error);
   }
 }
 
